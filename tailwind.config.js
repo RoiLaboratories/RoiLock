@@ -51,6 +51,15 @@ export default {
         },
         border: 'var(--color-border)',
       },
+      keyframes: {
+        'scale-pulse': {
+          '0%, 100%': { transform: 'scale(1)' },
+          '50%': { transform: 'scale(1.05)' },
+        },
+      },
+      animation: {
+        'scale-pulse': 'scale-pulse 2s ease-in-out infinite',
+      },
     },
   },
   plugins: [],
