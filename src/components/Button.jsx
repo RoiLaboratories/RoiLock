@@ -28,7 +28,7 @@ export default function Button({
     default: 'bg-gray-100 hover:bg-gray-200 text-gray-800 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-gray-200',
     primary: 'bg-[var(--color-primary)] hover:bg-[var(--color-primary)]/90 text-white',
     outlined: 'bg-transparent border border-3-[var(--color-text)] text-[var(--color-text)] hover:bg-[var(--color-text)]/10',
-    connect: 'bg-[#F76A2C] hover:bg-orange-600 text-white',
+    connect: 'bg-[var(--color-primary)] hover:bg-[var(--color-primary)] text-white',
     danger: 'bg-red-500 hover:bg-red-600 text-white',
     success: 'bg-green-500 hover:bg-green-600 text-white'
   };
