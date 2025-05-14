@@ -1,93 +1,108 @@
 import { useState } from 'react';
 import Sidebar from './Sidebar';
 import Header from './Header';
+import Home from '../pages/Home';
+
+// Import potential content components
+// import BasicLock from './content/BasicLock';
+// import PremiumLock from './content/PremiumLock';
+// import CustomLock from './content/CustomLock';
+// import DexScreener from './content/DexScreener';
+// import Rewards from './content/Rewards';
+// import Support from './content/Support';
+// import ThemeSettings from './content/ThemeSettings';
 
 export default function AppLayout() {
   const [content, setContent] = useState('home');
   
+  // Content configuration with external links and component mapping
   const contentMap = {
     'home': { 
-      title: 'Welcome to RoiLock Dashboard',
-      description: 'This is your home dashboard where you can see an overview of your locked assets and rewards.'
+      component: Home,
+      isExternal: false
     },
-    'lock-basic': {
-      title: 'Basic Lock Options',
-      description: 'Configure your basic token locking settings with standard timeframes and rewards.'
-    },
-    'lock-premium': {
-      title: 'Premium Lock Features',
-      description: 'Access premium locking features with enhanced APY and special benefits.'
-    },
-    'lock-custom': {
-      title: 'Custom Lock Configuration',
-      description: 'Create customized locking strategies tailored to your specific needs and goals.'
-    },
-    'dexscreener': {
-      title: 'Dexscreener Integration',
-      description: 'Monitor your tokens and market performance through our Dexscreener integration.'
-    },
-    'rewards': {
-      title: 'Your Rewards',
-      description: 'View and claim your earned rewards from locking your tokens.'
-    },
-    'support': {
-      title: 'Support Center',
-      description: 'Get help with any issues or questions about using RoiLock.'
-    },
+    // 'lock-basic': {
+    //   component: BasicLock,
+    //   isExternal: false
+    // },
+    // 'lock-premium': {
+    //   component: PremiumLock,
+    //   isExternal: false
+    // },
+    // 'lock-custom': {
+    //   component: CustomLock,
+    //   isExternal: false
+    // },
+    // 'dexscreener': {
+    //   component: DexScreener,
+    //   isExternal: false
+    // },
+    // 'rewards': {
+    //   component: Rewards,
+    //   isExternal: false
+    // },
+    // 'support': {
+    //   component: Support,
+    //   isExternal: false
+    // },
     'doc': {
-      title: 'Documentation',
-      description: 'Comprehensive guides and documentation for all RoiLock features.'
+      url: 'https://roi-laboratories.gitbook.io/roilabs',
+      isExternal: true
     },
     'x': {
-      title: 'X Community',
-      description: 'Connect with our X community for updates, discussions, and support.'
+      url: 'https://x.com/theroilabs',
+      isExternal: true
     },
     'youtube': {
-      title: 'YouTube Community',
-      description: 'Connect with our YouTube community for updates, discussions, and support.'
+      url: 'https://youtube.com/theroilabs',
+      isExternal: true
     },
     'telegram': {
-      title: 'Telegram Community',
-      description: 'Connect with our Telegram community for updates, discussions, and support.'
+      url: 'https://t.me/theroilabs',
+      isExternal: true
     },
-    'theme': {
-      title: 'Theme Settings',
-      description: 'Customize your visual experience with theme options.'
+    // 'theme': {
+    //   component: ThemeSettings,
+    //   isExternal: false
+    // }
+  };
+  
+  // Handle external links
+  const handleContentSelect = (contentKey) => {
+    const selectedContent = contentMap[contentKey];
+    
+    if (selectedContent && selectedContent.isExternal) {
+      // Open external link in new tab
+      window.open(selectedContent.url, '_blank', 'noopener,noreferrer');
+    } else {
+      // Set internal content
+      setContent(contentKey);
     }
   };
   
   const currentContent = contentMap[content] || contentMap.home;
+  const ContentComponent = currentContent.component || null;
 
   return (
     <div className="flex h-screen bg-background">
       {/* Sidebar - Full height, starts from top */}
-      <div className="flex-shrink-0 h-full">
-        <Sidebar onSelect={setContent} />
-      </div>
+      {/* <div className="h-full shrink-0-md"> */}
+        <Sidebar onSelect={handleContentSelect} />
+      {/* </div> */}
       
       {/* Main content area with header */}
-      <div className="flex-1 flex flex-col overflow-hidden">
+      <div className="flex flex-col overflow-hidden">
         {/* Header - Fixed at top of content area */}
         <Header />
         
         {/* Scrollable content area */}
-        <div className="flex-1 overflow-y-auto p-4 md:p-8">
-          <h1 className="text-2xl font-bold mb-4">{currentContent.title}</h1>
-          
-          <div className="surface p-6 rounded-lg shadow-md border border-[var(--color-border)]">
-            <p>{currentContent.description}</p>
-            {/* Additional content based on selection would go here */}
-          </div>
-          
-          {/* Demo placeholder content to show scrolling */}
-          <div className="mt-6 space-y-6">
-            {[1, 2, 3].map(item => (
-              <div key={item} className="surface p-6 rounded-lg shadow-md border border-[var(--color-border)]">
-                <h2 className="text-xl font-semibold mb-2">Section {item}</h2>
-                <p>Additional content for testing scrolling behavior.</p>
-              </div>
-            ))}
-          </div>
+        <div className="flex flex-col overflow-y-auto p-0">
+          {/* Render the appropriate component */}
+          {ContentComponent && (
+            <div className="p-0 flex flex-col items-center justify-center">
+              <ContentComponent />
+            </div>
+          )}
         </div>
       </div>
     </div>

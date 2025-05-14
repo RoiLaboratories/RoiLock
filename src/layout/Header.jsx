@@ -1,40 +1,44 @@
-import { Search } from 'lucide-react';
-import Button from '../components/Button';
-
-// Search Input Component
-const SearchInput = ({ placeholder = 'Search...' }) => {
-  return (
-    <div className="relative flex-1 max-w-xl">
-      <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-        <Search size={18} className="text-gray-400" />
-      </div>
-      <input
-        type="text"
-        className="w-full pl-10 pr-4 py-2 rounded-md bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/50"
-        placeholder={placeholder}
-      />
-    </div>
-  );
-};
+import { useState } from "react";
+import Button from "../components/Button";
+import SearchInput from "../components/SearchInput";
+import MobileSidebar from "./MobileSidebar";
+import { Menu } from "lucide-react";
 
 export default function Header() {
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const toggleMenu = () => setMenuOpen(!menuOpen);
+  
+  const handleMenuItemSelect = (selectedItem) => {
+    console.log(`Selected: ${selectedItem}`);
+    setMenuOpen(false);
+  };
+
   return (
-    <header className="surface w-full border-b border-[var(--color-border)] shadow-sm sticky top-0 z-50 px-8 md:px-8">
-      <div className="flex items-center justify-between py-3">
+    <header className="surface w-full border-b border-[var(--color-border)] shadow-sm sticky top-0 z-30 px-0 mx-0 md:px-8 md:pl-2">
+      <div className="flex items-center justify-between py-2">
+        <div className="flex items-start justify-start px-4 py-3 mb-2">
+          <div className="flex items-center justify-start">
+            <img src="/roi.png" alt="RoiLock Logo" className="w-[40px]" />
+            <h1 className="ml-3 font-bold text-xl !hidden sm:!flex">RoiLock</h1>
+          </div>
+        </div>
+
         <div className="flex items-center flex-1">
           <SearchInput placeholder="Type token symbol to find your launchpad" />
         </div>
-        <div className="flex items-center gap-8 md:gap-8">
+
+        {/* Desktop Buttons */}
+        <div className="hidden md:flex items-center gap-8">
           <Button
             variant="outlined"
-            className="sm:flex"
             icon={
-              <svg 
-                viewBox="0 0 24 24" 
-                fill="none" 
-                stroke="currentColor" 
-                strokeWidth="2" 
-                strokeLinecap="round" 
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
                 strokeLinejoin="round"
                 className="w-4 h-4"
               >
@@ -46,11 +50,23 @@ export default function Header() {
             dexscreener.com
           </Button>
 
-          <Button variant="connect">
-            Connect Wallet
-          </Button>
+          <Button variant="connect">Connect Wallet</Button>
+        </div>
+
+        {/* Mobile: Burger menu button */}
+        <div className="md:hidden flex px-4">
+          <button onClick={toggleMenu}>
+            <Menu className="w-6 h-6 text-primary" />
+          </button>
         </div>
       </div>
+
+      {/* Mobile Sidebar */}
+      <MobileSidebar 
+        isOpen={menuOpen} 
+        onClose={() => setMenuOpen(false)} 
+        onSelect={handleMenuItemSelect} 
+      />
     </header>
   );
 }

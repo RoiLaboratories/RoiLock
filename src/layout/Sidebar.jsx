@@ -1,3 +1,4 @@
+import './Sidebar.css'
 import { useState, useEffect, useRef } from "react";
 import {
   Home,
@@ -12,34 +13,32 @@ import {
   Sun,
   ChevronDown,
 } from "lucide-react";
-const useTheme = () => {
-  const [systemIsDark, setSystemIsDark] = useState(
-    () =>
-      window.matchMedia &&
-      window.matchMedia("(prefers-color-scheme: dark)").matches
-  );
 
-  const [darkMode, setDarkMode] = useState(systemIsDark);
+const useTheme = () => {
+  const [darkMode, setDarkMode] = useState(true);
+
 
   useEffect(() => {
-    if (darkMode) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, [darkMode]);
+  if (darkMode === true) {
+    document.documentElement.classList.add("dark");
+  } else {
+    document.documentElement.classList.remove("dark");
+  }
+}, [darkMode]);
+
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
 
     const handleChange = (e) => {
-      setSystemIsDark(e.matches);
+      // setSystemIsDark(e.matches);
       setDarkMode(e.matches);
     };
 
     mediaQuery.addEventListener("change", handleChange);
     return () => mediaQuery.removeEventListener("change", handleChange);
-  }, []);
+  },
+  []);
 
   const toggleDarkMode = () => setDarkMode(!darkMode);
   const setThemeMode = (mode) => setDarkMode(mode);
@@ -62,7 +61,7 @@ export default function Sidebar({ onSelect }) {
     if (!expanded) {
       const timeout = setTimeout(() => {
         setExpanded(true);
-      }, 300);
+      }, 500);
       setHoverTimeout(timeout);
     }
   };
@@ -75,7 +74,7 @@ export default function Sidebar({ onSelect }) {
       const timeout = setTimeout(() => {
         setExpanded(false);
         if (openSubmenu) setOpenSubmenu(null);
-      }, 300);
+      }, 500);
       setHoverTimeout(timeout);
     }
   };
@@ -199,36 +198,29 @@ export default function Sidebar({ onSelect }) {
   };
 
   return (
-    <div
-      className={`h-full transition-all duration-300 z-40 ${
-        expanded ? "w-64" : "w-16"
-      }`}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-    >
-      <div className="h-full shadow-md flex flex-col surface border-r border-[var(--color-border)]">
-        {/* Logo */}
-        <div className="flex items-center px-4 py-5 mb-2">
-          <div className="flex items-center">
-            <div className="flex">
-              <img src="/public/roi.png" alt="" className="w-9" />
-            </div>
-            {expanded && (
-              <span className="ml-3 font-bold text-xl">RoiLock</span>
-            )}
-          </div>
-        </div>
+
+
+<div
+  className={`fixed top-10 h-screen z-[30] left-0 hidden md:flex surface pt-6 transition-width ease-in-out duration-400 border-r border-[var(--color-border)] 
+    ${expanded ? "w-60 pt-2" : "w-16 pt-1"}
+  `}
+  onMouseEnter={handleMouseEnter}
+  onMouseLeave={handleMouseLeave}
+>
+
+
+      <div className="h-screen overflow-hidden  flex flex-col ">
 
         {/* Menu Items */}
-        <nav className="flex-1 overflow-y-auto">
-          <ul>
+        <nav className="flex-1 overflow-hidden h-screen">
+          <ul className="pt-4">
             {menuItems.map((item) => (
               <li key={item.id} className="relative">
                 <div
                   className={`
                     flex items-center ${
-                      expanded ? "px-4 py-2" : "justify-center py-3"
-                    } py-3 
+                      expanded ? "px-4 py-1" : "justify-start px-4 py-3.5"
+                    } py-3 pl-6
                     hover:bg-[var(--color-primary)]/10 transition-colors cursor-pointer
                     ${
                       selectedContent === item.id ||
