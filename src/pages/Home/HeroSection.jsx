@@ -49,7 +49,7 @@ export default function HeroSection() {
           <img 
             src="/bgHome.png" 
             alt="RoiLock Safe with Crypto Coins" 
-            className=" relative z-10 image-contain"
+            className=" relative z-10 image-contain animate-scale-pulse"
           />
         </div>
       </div>
