@@ -9,7 +9,7 @@ export default function StatsBar() {
     },
     {
       value: '1.2k',
-      label: 'Total Token Locked'
+      label: 'Total Tokens Locked'
     },
     {
       value: '8k',
@@ -17,7 +17,7 @@ export default function StatsBar() {
     },
     {
       value: '$2.8k',
-      label: 'Total Value Locked'
+      label: 'Total Values Locked'
     }
   ];
   
