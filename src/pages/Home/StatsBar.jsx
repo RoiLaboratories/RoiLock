@@ -16,7 +16,7 @@ export default function StatsBar() {
       label: 'Total Participants'
     },
     {
-      value: '2.8k',
+      value: '$2.8k',
       label: 'Total Value Locked'
     }
   ];

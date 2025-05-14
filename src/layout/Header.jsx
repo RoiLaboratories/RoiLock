@@ -25,7 +25,7 @@ export default function Header() {
         </div>
 
         <div className="flex items-center flex-1">
-          <SearchInput placeholder="Type token symbol to find your launchpad" />
+          <SearchInput placeholder="Type token symbol or address to find your Lock" />
         </div>
 
         {/* Desktop Buttons */}
