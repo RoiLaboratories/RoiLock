@@ -10,7 +10,7 @@ const CreateLockScreen = () => {
   const [tokenDetails, setTokenDetails] = useState(null);
   
   const chains = [
-    { id: 'evm', name: 'EVM Chain (Base, ETH, BNB...)', selected: true },
+    { id: 'evm', name: 'EVM Chain (Base, Ethereum, BSC...)', selected: true },
     // Other chain types could be added here
   ];
   
