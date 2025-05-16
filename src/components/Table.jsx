@@ -2,7 +2,7 @@ export default function Table  ({ title, columns, data, containerClassName }) {
   return (
     <div className={`rounded-lg surface shadow p-6 shadow-md border border-gray-300 ${containerClassName || ''}`}>
       {/* Title stays fixed */}
-      {title && <h2 className="text-xl font-bold mb-4">{title}</h2>}
+      {title && <h2 className="text-lg font-bold mb-4">{title}</h2>}
       
       {/* Scrollable container for table content */}
       <div className="overflow-x-auto">

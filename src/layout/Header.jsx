@@ -3,9 +3,27 @@ import Button from "../components/Button";
 import SearchInput from "../components/SearchInput";
 import MobileSidebar from "./MobileSidebar";
 import { Menu } from "lucide-react";
+import ConnectWallet from "../Modals/ConnectWallet";
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
+    const [isWalletModalOpen, setIsWalletModalOpen] = useState(false);
+      const [connectedWallet, setConnectedWallet] = useState(null);
+
+
+ const handleWalletSelect = (walletId) => {
+    console.log(`Wallet selected: ${walletId}`);
+    setConnectedWallet(walletId);
+    // Implement actual wallet connection logic here
+  };
+
+    const openConnectWalletModal = () => {
+    setIsWalletModalOpen(true);
+    // If menu is open when connecting wallet, close it
+    if (menuOpen) {
+      setMenuOpen(false);
+    }
+  };
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
   
@@ -50,7 +68,9 @@ export default function Header() {
             dexscreener.com
           </Button>
 
-          <Button variant="connect">Connect Wallet</Button>
+          <Button variant="connect"
+          onClick={() => setIsWalletModalOpen(true)}
+          >Connect Wallet</Button>
         </div>
 
         {/* Mobile: Burger menu button */}
@@ -62,10 +82,24 @@ export default function Header() {
       </div>
 
       {/* Mobile Sidebar */}
-      <MobileSidebar 
+      {/* <MobileSidebar 
         isOpen={menuOpen} 
         onClose={() => setMenuOpen(false)} 
         onSelect={handleMenuItemSelect} 
+      /> */}
+
+         <MobileSidebar 
+        isOpen={menuOpen} 
+        onClose={() => setMenuOpen(false)}
+        onSelect={handleMenuItemSelect}
+        onConnectWallet={openConnectWalletModal}
+        connectedWallet={connectedWallet}
+      />
+
+       <ConnectWallet
+        isOpen={isWalletModalOpen}
+        onClose={() => setIsWalletModalOpen(false)}
+        onWalletSelect={handleWalletSelect}
       />
     </header>
   );

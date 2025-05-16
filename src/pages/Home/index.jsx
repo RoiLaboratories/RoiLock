@@ -1,4 +1,5 @@
 import Footer from "../../components/Footer";
+import Warning from "../../components/warning";
 import HeroSection from "./HeroSection";
 import StatsBar from "./StatsBar";
 import SupportedChains from "./SupportedChains";
@@ -12,6 +13,7 @@ export default function Home() {
      <StatsBar/>
     <SupportedChains
     className="flex px-4 items-center justify-center"/>
+    <Warning/>
     <Footer/>
     </div>
   );
