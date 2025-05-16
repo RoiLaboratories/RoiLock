@@ -34,7 +34,7 @@ export default function StatsBar() {
               <div className="md:text-5xl text-4xl font-bold text-primary"> 
                 <NumberCounter value={stat.value} duration={3000} />
               </div>
-              <div className="md:text-lg text-md text-text mt-1">
+              <div className="md:text-sm text-md text-text mt-1">
                 {stat.label}
               </div>
             </div>

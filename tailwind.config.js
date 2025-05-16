@@ -1,4 +1,7 @@
 /** @type {import('tailwindcss').Config} */
+
+import scrollbarHide from 'tailwind-scrollbar-hide';
+
 export default {
   content: [
     "./index.html",
@@ -45,11 +48,16 @@ export default {
         primary: 'var(--color-primary)',
         background: 'var(--color-background)',
         surface: 'var(--color-surface)',
+                btnhoverL: 'var(--color-btnhoverL)',
+
         text: {
           DEFAULT: 'var(--color-text)',
           secondary: 'var(--color-text-secondary)',
         },
         border: 'var(--color-border)',
+      },
+            backgroundColor: {
+        btnhoverL: 'var(--color-btnhoverL)',
       },
       keyframes: {
         'scale-pulse': {
@@ -62,5 +70,18 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    scrollbarHide
+
+  ],
 }
+
+//  colors: {
+//         primary: 'var(--color-primary)',
+//         background: 'var(--color-background)',
+//         surface: 'var(--color-surface)',
+//         text: 'var(--color-text)',
+//         'text-secondary': 'var(--color-text-secondary)',
+//         border: 'var(--color-border)',
+//         btnhoverL: 'var(--color-btnhoverL)',
+//       },

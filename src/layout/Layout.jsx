@@ -1,110 +1,98 @@
-import { useState } from 'react';
+import {  useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Header from './Header';
 import Home from '../pages/Home';
+import CreateLockHolder from '../pages/CreateLock';
 
-// Import potential content components
-// import BasicLock from './content/BasicLock';
-// import PremiumLock from './content/PremiumLock';
-// import CustomLock from './content/CustomLock';
-// import DexScreener from './content/DexScreener';
-// import Rewards from './content/Rewards';
-// import Support from './content/Support';
-// import ThemeSettings from './content/ThemeSettings';
+// Page components
+const CreateLock = () => <CreateLockHolder/>;
+const TokenLock = () => <div>Token Lock Content</div>;
+const LiquidityLock = () => <div>Liquidity Lock Content</div>;
+const Rewards = () => <div>Rewards Content</div>;
+const Support = () => <div>Support Content</div>;
+const ThemeSettings = () => <div>Theme Settings</div>;
 
-export default function AppLayout() {
-  const [content, setContent] = useState('home');
-  
-  // Content configuration with external links and component mapping
-  const contentMap = {
-    'home': { 
-      component: Home,
-      isExternal: false
-    },
-    // 'lock-basic': {
-    //   component: BasicLock,
-    //   isExternal: false
-    // },
-    // 'lock-premium': {
-    //   component: PremiumLock,
-    //   isExternal: false
-    // },
-    // 'lock-custom': {
-    //   component: CustomLock,
-    //   isExternal: false
-    // },
-    // 'dexscreener': {
-    //   component: DexScreener,
-    //   isExternal: false
-    // },
-    // 'rewards': {
-    //   component: Rewards,
-    //   isExternal: false
-    // },
-    // 'support': {
-    //   component: Support,
-    //   isExternal: false
-    // },
-    'doc': {
-      url: 'https://roi-laboratories.gitbook.io/roilabs',
-      isExternal: true
-    },
-    'x': {
-      url: 'https://x.com/theroilabs',
-      isExternal: true
-    },
-    'youtube': {
-      url: 'https://youtube.com/theroilabs',
-      isExternal: true
-    },
-    'telegram': {
-      url: 'https://t.me/theroilabs',
-      isExternal: true
-    },
-    // 'theme': {
-    //   component: ThemeSettings,
-    //   isExternal: false
-    // }
-  };
-  
-  // Handle external links
-  const handleContentSelect = (contentKey) => {
-    const selectedContent = contentMap[contentKey];
-    
-    if (selectedContent && selectedContent.isExternal) {
-      // Open external link in new tab
-      window.open(selectedContent.url, '_blank', 'noopener,noreferrer');
-    } else {
-      // Set internal content
-      setContent(contentKey);
+// External links configuration
+const externalLinks = {
+  'dexscreener': 'https://dexscreener.com',
+  'doc': 'https://roi-laboratories.gitbook.io/roilabs',
+  'x': 'https://x.com/theroilabs',
+  'youtube': 'https://youtube.com/theroilabs',
+  'telegram': 'https://t.me/theroilabs'
+};
+
+// Route configuration with metadata
+const routes = {
+  '/': { name: 'home', component: Home },
+  '/create-lock': { name: 'create-lock', component: CreateLock, parent: 'roilock' },
+  '/token-lock': { name: 'token-lock', component: TokenLock, parent: 'roilock' },
+  '/liquidity-lock': { name: 'liquidity-lock', component: LiquidityLock, parent: 'roilock' },
+  '/rewards': { name: 'rewards', component: Rewards },
+  '/support': { name: 'support', component: Support },
+  '/theme': { name: 'theme', component: ThemeSettings }
+};
+
+// Helper function to get route path by name
+export const getRouteByName = (routeName) => {
+  for (const [path, config] of Object.entries(routes)) {
+    if (config.name === routeName) {
+      return path;
     }
-  };
+  }
+  return '/'; // Default to home if route name not found
+};
+
+// Main content area with routing
+const MainContent = () => {
+  const location = useLocation();
   
-  const currentContent = contentMap[content] || contentMap.home;
-  const ContentComponent = currentContent.component || null;
+  useEffect(() => {
+    // Scroll to top when route changes
+    window.scrollTo(0, 0);
+  }, [location]);
 
   return (
-    <div className="flex h-screen bg-background">
-      {/* Sidebar - Full height, starts from top */}
-      {/* <div className="h-full shrink-0-md"> */}
-        <Sidebar onSelect={handleContentSelect} />
-      {/* </div> */}
-      
-      {/* Main content area with header */}
-      <div className="flex flex-col overflow-hidden">
-        {/* Header - Fixed at top of content area */}
-        <Header />
-        
-        {/* Scrollable content area */}
-        <div className="flex flex-col overflow-y-auto p-0">
-          {/* Render the appropriate component */}
-          {ContentComponent && (
-            <div className="p-0 flex flex-col items-center justify-center">
-              <ContentComponent />
-            </div>
-          )}
-        </div>
+    <div className="flex flex-col overflow-hidden w-full">
+      <Header />
+      <div className="flex flex-col overflow-y-auto scrollbar-hide  w-full">
+        <Routes>
+          {Object.entries(routes).map(([path, { component: Component }]) => (
+            <Route key={path} path={path} element={<Component />} />
+          ))}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
       </div>
     </div>
+  );
+};
+
+// Sidebar with navigation
+const SidebarWithNavigation = () => {
+  const navigate = useNavigate();
+  
+  const handleNavigation = (contentKey) => {
+    // Check if it's an external link
+    if (externalLinks[contentKey]) {
+      window.open(externalLinks[contentKey], '_blank', 'noopener,noreferrer');
+      return;
+    }
+    
+    // For internal routes, navigate to the corresponding path
+    const routePath = getRouteByName(contentKey);
+    navigate(routePath);
+  };
+  
+  return <Sidebar onSelect={handleNavigation} />;
+};
+
+export default function AppLayout() {
+  return (
+    <Router>
+      <div className="flex h-screen bg-background">
+        <SidebarWithNavigation />
+        <MainContent />
+      </div>
+    </Router>
   );
 }

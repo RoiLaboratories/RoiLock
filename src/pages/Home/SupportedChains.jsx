@@ -5,23 +5,23 @@ export default function SupportedChains() {
   const chainData = [
     { 
       chain: "Base", 
-      logo: <div className="w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold">B</div>,
+      logo: <div className="w-6 h-6 rounded-full flex items-center justify-center text-white font-bold"><img src="/base.png" alt="" /></div>,
       projects: "2.3k", 
       participants: "9k", 
       liquidityLocked: "294k", 
       valuesLocked: "1.3M" 
     },
     { 
-      chain: "BNB", 
-      logo: <div className="w-6 h-6 rounded-full bg-yellow-400 flex items-center justify-center text-white font-bold">B</div>,
+      chain: "BSC", 
+      logo: <div className="w-6 h-6 rounded-full flex items-center justify-center text-white font-bold"><img src="/bsc.png" alt="" /></div>,
       projects: "2.3k", 
       participants: "9k", 
       liquidityLocked: "294k", 
       valuesLocked: "1.3M" 
     },
     { 
-      chain: "ETH", 
-      logo: <div className="w-6 h-6 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold">E</div>,
+      chain: "Ethereum", 
+      logo: <div className="w-6 h-6 rounded-full flex items-center justify-center text-white font-bold"><img src="/eth.png" alt="" /></div>,
       projects: "2.3k", 
       participants: "9k", 
       liquidityLocked: "294k", 
@@ -29,23 +29,7 @@ export default function SupportedChains() {
     },
     { 
       chain: "Polygon", 
-      logo: <div className="w-6 h-6 rounded-full bg-purple-600 flex items-center justify-center text-white font-bold">P</div>,
-      projects: "2.3k", 
-      participants: "9k", 
-      liquidityLocked: "294k", 
-      valuesLocked: "1.3M" 
-    },
-    { 
-      chain: "Sonic", 
-      logo: <div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white font-bold">S</div>,
-      projects: "2.3k", 
-      participants: "9k", 
-      liquidityLocked: "294k", 
-      valuesLocked: "1.3M" 
-    },
-    { 
-      chain: "Avalanche", 
-      logo: <div className="w-6 h-6 rounded-full bg-red-600 flex items-center justify-center text-white font-bold">A</div>,
+      logo: <div className="w-6 h-6 rounded-full flex items-center justify-center text-white font-bold"><img src="/polygon.png" alt="" /></div>,
       projects: "2.3k", 
       participants: "9k", 
       liquidityLocked: "294k", 
@@ -53,36 +37,12 @@ export default function SupportedChains() {
     },
     { 
       chain: "Arbitrum", 
-      logo: <div className="w-6 h-6 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold">A</div>,
+      logo: <div className="w-6 h-6 rounded-full bg-none flex items-center justify-center"><img src="/arbitrum.png" alt="" /></div>,
       projects: "2.3k", 
       participants: "9k", 
       liquidityLocked: "294k", 
       valuesLocked: "1.3M" 
-    },
-    { 
-      chain: "Optimism", 
-      logo: <div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center text-white font-bold">O</div>,
-      projects: "2.3k", 
-      participants: "9k", 
-      liquidityLocked: "294k", 
-      valuesLocked: "1.3M" 
-    },
-    { 
-      chain: "Solana", 
-      logo: <div className="w-6 h-6 rounded-full bg-purple-500 flex items-center justify-center text-white font-bold">S</div>,
-      projects: "2.3k", 
-      participants: "9k", 
-      liquidityLocked: "294k", 
-      valuesLocked: "1.3M" 
-    },
-    { 
-      chain: "Cardano", 
-      logo: <div className="w-6 h-6 rounded-full bg-blue-800 flex items-center justify-center text-white font-bold">C</div>,
-      projects: "2.3k", 
-      participants: "9k", 
-      liquidityLocked: "294k", 
-      valuesLocked: "1.3M" 
-    },
+    }
   ];
 
   // Column definitions

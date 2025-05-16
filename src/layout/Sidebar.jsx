@@ -1,44 +1,44 @@
-import './Sidebar.css'
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { navigateToRoute, isExternalLink, openExternalLink } from '../../utils/navigation';
 import {
   Home,
   Lock,
   Award,
   Headphones,
   FileText,
-  X,
   Youtube,
   Send,
   Moon,
   Sun,
   ChevronDown,
+  ChevronRight,
 } from "lucide-react";
+import { FaXTwitter } from "react-icons/fa6";
+import "./Sidebar.css"
 
+// Custom hook for theme management
 const useTheme = () => {
   const [darkMode, setDarkMode] = useState(true);
 
-
   useEffect(() => {
-  if (darkMode === true) {
-    document.documentElement.classList.add("dark");
-  } else {
-    document.documentElement.classList.remove("dark");
-  }
-}, [darkMode]);
-
+    if (darkMode === true) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, [darkMode]);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
 
     const handleChange = (e) => {
-      // setSystemIsDark(e.matches);
       setDarkMode(e.matches);
     };
 
     mediaQuery.addEventListener("change", handleChange);
     return () => mediaQuery.removeEventListener("change", handleChange);
-  },
-  []);
+  }, []);
 
   const toggleDarkMode = () => setDarkMode(!darkMode);
   const setThemeMode = (mode) => setDarkMode(mode);
@@ -47,15 +47,31 @@ const useTheme = () => {
 };
 
 export default function Sidebar({ onSelect }) {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [expanded, setExpanded] = useState(false);
   const [hoverTimeout, setHoverTimeout] = useState(null);
   const [openSubmenu, setOpenSubmenu] = useState(null);
   const [selectedContent, setSelectedContent] = useState("home");
   const [themeDropdownOpen, setThemeDropdownOpen] = useState(false);
+  const [hoveredItem, setHoveredItem] = useState(null);
   const { darkMode, setThemeMode } = useTheme();
   const themeDropdownRef = useRef(null);
 
-  const isRoiLockActive = selectedContent.startsWith("lock-");
+  // Determine active route based on location
+  useEffect(() => {
+    const path = location.pathname.substring(1) || 'home';
+    setSelectedContent(path);
+    
+    // Handle nested routes
+    if (path.includes('create-lock') || path.includes('token-lock') || path.includes('liquidity-lock')) {
+      setOpenSubmenu('roilock');
+    }
+  }, [location]);
+
+  // Check if any RoiLock submenu item is selected
+  const roiLockSubmenuIds = ["create-lock", "token-lock", "liquidity-lock"];
+  const isRoiLockActive = selectedContent === "roilock" || roiLockSubmenuIds.includes(selectedContent);
 
   const handleMouseEnter = () => {
     if (!expanded) {
@@ -93,9 +109,19 @@ export default function Sidebar({ onSelect }) {
     }
   };
 
-  const selectContent = (item) => {
+  const handleItemClick = (item) => {
     setSelectedContent(item);
-    if (onSelect) onSelect(item);
+    
+    if (isExternalLink(item)) {
+      openExternalLink(item);
+    } else {
+      navigateToRoute(item, navigate);
+    }
+    
+    if (onSelect) {
+      onSelect(item);
+    }
+    
     if (window.innerWidth < 768) {
       setExpanded(false);
     }
@@ -145,9 +171,9 @@ export default function Sidebar({ onSelect }) {
       divider: false,
       hasSubmenu: true,
       submenu: [
-        { id: "lock-basic", label: "Basic Lock" },
-        { id: "lock-premium", label: "Premium Lock" },
-        { id: "lock-custom", label: "Custom Lock" },
+        { id: "create-lock", label: "Create Lock" },
+        { id: "token-lock", label: "Token Lock" },
+        { id: "liquidity-lock", label: "Liquidity Lock" },
       ],
     },
     {
@@ -155,6 +181,7 @@ export default function Sidebar({ onSelect }) {
       icon: <DexscreenerIcon />,
       label: "Dexscreener.com",
       divider: false,
+      isExternal: true,
     },
     {
       id: "rewards",
@@ -168,19 +195,21 @@ export default function Sidebar({ onSelect }) {
       label: "Support",
       divider: true,
     },
-    { id: "doc", icon: <FileText size={20} />, label: "Doc", divider: false },
-    { id: "x", icon: <X size={20} />, label: "X", divider: false },
+    { id: "doc", icon: <FileText size={20} />, label: "Doc", divider: false, isExternal: true },
+    { id: "x", icon: <FaXTwitter size={20} />, label: "X", divider: false, isExternal: true },
     {
       id: "youtube",
       icon: <Youtube size={20} />,
       label: "Youtube",
       divider: false,
+      isExternal: true,
     },
     {
       id: "telegram",
       icon: <Send size={20} />,
       label: "Telegram",
-      divider: false,
+      divider: true,
+      isExternal: true,
     },
     {
       id: "theme",
@@ -198,24 +227,24 @@ export default function Sidebar({ onSelect }) {
   };
 
   return (
-
-
-<div
-  className={`fixed top-10 h-screen z-[30] left-0 hidden md:flex surface pt-6 transition-width ease-in-out duration-400 border-r border-[var(--color-border)] 
-    ${expanded ? "w-60 pt-2" : "w-16 pt-1"}
-  `}
-  onMouseEnter={handleMouseEnter}
-  onMouseLeave={handleMouseLeave}
->
-
-
-      <div className="h-screen overflow-hidden  flex flex-col ">
-
+    <div
+      className={`fixed top-10 text-sm h-screen z-[30] left-0 hidden md:flex surface pt-6 transition-width ease-in-out duration-400 border-r border-[var(--color-border)] 
+        ${expanded ? "w-60 pt-2" : "w-16 pt-1"}
+      `}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      <div className="h-screen overflow-hidden flex flex-col w-full">
         {/* Menu Items */}
         <nav className="flex-1 overflow-hidden h-screen">
           <ul className="pt-4">
             {menuItems.map((item) => (
-              <li key={item.id} className="relative">
+              <li 
+                key={item.id} 
+                className="relative group"
+                onMouseEnter={() => setHoveredItem(item.id)}
+                onMouseLeave={() => setHoveredItem(null)}
+              >
                 <div
                   className={`
                     flex items-center ${
@@ -224,9 +253,10 @@ export default function Sidebar({ onSelect }) {
                     hover:bg-[var(--color-primary)]/10 transition-colors cursor-pointer
                     ${
                       selectedContent === item.id ||
-                      (item.id === "roilock" && isRoiLockActive)
+                      (item.id === "roilock" && isRoiLockActive) ||
+                      hoveredItem === item.id
                         ? "bg-[var(--color-primary)]/10 text-[var(--color-primary)]"
-                        : ""
+                        : "hover:text-[var(--color-primary)]"
                     }
                     ${item.id === "theme" ? "theme-menu-item" : ""}
                   `}
@@ -240,7 +270,7 @@ export default function Sidebar({ onSelect }) {
                     } else if (item.hasSubmenu) {
                       toggleSubmenu(item.id);
                     } else {
-                      selectContent(item.id);
+                      handleItemClick(item.id);
                     }
                   }}
                 >
@@ -248,7 +278,8 @@ export default function Sidebar({ onSelect }) {
                     className={`
                     ${
                       selectedContent === item.id ||
-                      (item.id === "roilock" && isRoiLockActive)
+                      (item.id === "roilock" && isRoiLockActive) ||
+                      hoveredItem === item.id
                         ? "text-[var(--color-primary)]"
                         : ""
                     }
@@ -259,20 +290,23 @@ export default function Sidebar({ onSelect }) {
                   {expanded && (
                     <div className="flex justify-between items-center flex-1">
                       <span className="ml-3">{item.label}</span>
+                      {item.isExternal && expanded && (
+                        <span className="text-xs ml-1">↗</span>
+                      )}
                       {item.hasSubmenu && !item.isCustomDropdown && (
                         <span
                           className={`transform transition-transform ${
                             openSubmenu === item.id ? "rotate-90" : ""
                           }`}
                         >
-                          &gt;
+                          <ChevronRight size={16}/>
                         </span>
                       )}
                       {item.id === "theme" && (
-                        <ChevronDown
+                        <ChevronRight
                           size={16}
                           className={`transition-transform ${
-                            themeDropdownOpen ? "rotate-180" : ""
+                            themeDropdownOpen ? "rotate-90" : ""
                           }`}
                         />
                       )}
@@ -289,15 +323,17 @@ export default function Sidebar({ onSelect }) {
                       {item.submenu.map((subItem) => (
                         <li
                           key={subItem.id}
-                          className={`py-2 hover:bg-[var(--color-primary)]/10 cursor-pointer ${
+                          className={`py-2 hover:bg-[var(--color-primary)]/10 hover:text-[var(--color-primary)] cursor-pointer transition-colors ${
                             selectedContent === subItem.id
                               ? "text-[var(--color-primary)] font-medium"
                               : ""
                           }`}
                           onClick={(e) => {
                             e.stopPropagation();
-                            selectContent(subItem.id);
+                            handleItemClick(subItem.id);
                           }}
+                          onMouseEnter={() => setHoveredItem(subItem.id)}
+                          onMouseLeave={() => setHoveredItem(null)}
                         >
                           {subItem.label}
                         </li>
@@ -313,7 +349,7 @@ export default function Sidebar({ onSelect }) {
                   >
                     <ul>
                       <li
-                        className={`px-4 py-2 hover:bg-[var(--color-primary)]/10 cursor-pointer flex items-center gap-2 ${
+                        className={`px-4 py-2 hover:bg-[var(--color-primary)]/10 hover:text-[var(--color-primary)] transition-colors cursor-pointer flex items-center gap-2 ${
                           darkMode === true
                             ? "bg-[var(--color-primary)]/10 text-[var(--color-primary)]"
                             : ""
@@ -322,11 +358,13 @@ export default function Sidebar({ onSelect }) {
                           e.stopPropagation();
                           selectTheme(true);
                         }}
+                        onMouseEnter={() => setHoveredItem('theme-dark')}
+                        onMouseLeave={() => setHoveredItem(null)}
                       >
                         <Moon size={16} /> Dark
                       </li>
                       <li
-                        className={`px-4 py-2 hover:bg-[var(--color-primary)]/10 cursor-pointer flex items-center gap-2 ${
+                        className={`px-4 py-2 hover:bg-[var(--color-primary)]/10 hover:text-[var(--color-primary)] transition-colors cursor-pointer flex items-center gap-2 ${
                           darkMode === false
                             ? "bg-[var(--color-primary)]/10 text-[var(--color-primary)]"
                             : ""
@@ -335,6 +373,8 @@ export default function Sidebar({ onSelect }) {
                           e.stopPropagation();
                           selectTheme(false);
                         }}
+                        onMouseEnter={() => setHoveredItem('theme-light')}
+                        onMouseLeave={() => setHoveredItem(null)}
                       >
                         <Sun size={16} /> Light
                       </li>
@@ -351,3 +391,5 @@ export default function Sidebar({ onSelect }) {
     </div>
   );
 }
+
+

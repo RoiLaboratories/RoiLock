@@ -1,3 +1,4 @@
+import { Link } from 'react-router';
 import Button from '../../components/Button';
 import { Lock } from 'lucide-react';
 
@@ -5,19 +6,20 @@ export default function HeroSection() {
   return (
     <div className="flex w-full md:flex-row flex-col items-center justify-between md:py-10 py-4 md:px-12 px-4">
       {/* Left Content */}
-      <div className="md:w-full max-w-xl mb-10 lg:mb-0 md:pl-12 pl-0">
-        <h1 className=" md:text-5xl text-4xl font-bold text-text mb-4 md:text-left text-center">
-          Secure Liquidity Locks. <span className="text-primary md:text-4xl text-4xl">Flexible Vesting.</span>
-          {" "} <span className=" md:text-4xl text-3xl font-bold text-primary md:mb-6 mb-2"> 
+      <div className="md:w-full max-w-xl mb-10 lg:mb-0 md:pl-12 pl-0 md:py-0 py-6">
+        <h1 className=" md:text-4xl text-3xl font-bold text-text mb-4 md:text-left text-center">
+          Secure Liquidity Locks. <span className="text-primary md:text-3xl text-3xl">Flexible Vesting.</span>
+          {" "} <span className=" md:text-3xl text-3xl font-bold text-primary md:mb-6 mb-2"> 
           Built for Web3.
         </span>
         </h1>
        
-        <p className="md:text-lg text-md text-text mb-8 md:text-left text-center">
+        <p className="md:text-sm text-md text-text mb-8 md:text-left text-center">
           RoiLock is a decentralized platform for locking tokens and liquidity with customizable 
           schedules, multi-chain support, and rewards for long-term commitment.
         </p>
         <div className=' justify-center items-center flex md:hidden'>
+        <Link to="/create-lock">
          <Button
                     variant="outlined"
                     className="sm:flex border border-[var(--color-text)] text-[var(--color-text)] hover:bg-[var(--color-surface)]"
@@ -27,7 +29,10 @@ export default function HeroSection() {
                   >
                     Create Lock
                   </Button>
+                  </Link>
                   </div>
+                          <Link to="/create-lock">
+
                    <Button
                     variant="outlined"
                     className="sm:flex border border-[var(--color-text)] text-[var(--color-text)] hover:bg-[var(--color-surface)] md:flex hidden"
@@ -37,6 +42,7 @@ export default function HeroSection() {
                   >
                     Create Lock
                   </Button>
+                  </Link>
       </div>
 
       {/* Right Image with Glow Effect */}

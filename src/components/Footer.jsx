@@ -34,10 +34,10 @@ const SunIcon = () => (
 
 // RoiLock Logo component
 const RoiLockLogo = () => {
-  const { darkMode } = useTheme();
+  // const { darkMode } = useTheme();
   
   return (
-    <div className="flex items-start justify-start px-4 py-3 mb-2">
+    <div className="flex items-start justify-start text-sm px-4 py-3 mb-2">
       <div className="flex items-center justify-start">
         <img src="/roi.png" alt="RoiLock Logo" className="w-10" />
         <h1 className="ml-3 font-bold text-xl text-text">RoiLock</h1>
@@ -51,7 +51,7 @@ export default function Footer() {
   const { darkMode, setThemeMode } = useTheme();
   
   return (
-    <footer className={`py-6 mt-12 w-full surface`}>
+    <footer className={`py-6 mt-12 w-full surface text-sm`}>
       <div className="max-w-6xl mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Logo and description */}
