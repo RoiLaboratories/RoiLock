@@ -166,7 +166,7 @@ const CreateLockScreen = () => {
                     className="w-full p-3 border border-gray-300 bg-[var(--color-btnhoverL)] rounded-md"
                     placeholder="Enter owner's address"
                   />
-                  <p className="text-orange-500 text-sm mt-1">the address you input here will be receive the tokens once they are unlocked</p>
+                  <p className="text-orange-500 text-sm mt-1">the address you input here will receive the tokens once they are unlocked</p>
                 </div>
               )}
             </div>

@@ -43,7 +43,7 @@ export default function Header() {
         </div>
 
         <div className="flex items-center flex-1">
-          <SearchInput placeholder="Type token symbol or address to find your Lock" />
+          <SearchInput placeholder="Type token symbol or address to find your lock" />
         </div>
 
         {/* Desktop Buttons */}
